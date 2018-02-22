@@ -49,7 +49,7 @@ def validate_ownership_data(request):
 
 def validate_accreditation_level(request, item, level_name):
     level = getattr(type(item), level_name)
-    if not request.check_accreditation(level):
+    if not any([request.check_accreditation(l) for l in iter(str(level))]):
         request.errors.add('procurementMethodType', 'accreditation', 'Broker Accreditation level does not permit ownership change')
         request.errors.status = 403
         return
